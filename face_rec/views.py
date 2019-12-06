@@ -35,11 +35,8 @@ class IdentificationView(APIView):
 
         for user in users.iterator():
             userPhoto = user.photo
-            if user.firstName == "Denis":
-                if face_identification.isIdent(userPhoto, ident_saved.photo) == True:
-                    return Response({"result": "true"})
-                else:
-                    return Response({"result": "false"})
-            else:
-                continue
+            if face_identification.isIdent(userPhoto, ident_saved.photo) == True:
+                    return Response({"user": {"firstName": user.firstName,"lastName": user.lastName}})
+        
+        return Response({"user": {"firstName": "","lastName": ""}})
         
