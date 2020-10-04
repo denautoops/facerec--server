@@ -3,15 +3,11 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
-class User(models.Model):
 
-    firstName = models.CharField(max_length=255)
-    lastName = models.CharField(max_length=255)
-    photo = models.TextField()
+class User(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    photo = models.ImageField()
 
     def __str__(self):
-        return self.firstName + " " + self.lastName
-
-class Ident(models.Model):
-    photo = models.TextField()
+        return self.first_name + " " + self.last_name

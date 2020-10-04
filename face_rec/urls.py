@@ -1,11 +1,16 @@
 from django.conf.urls import url
+from django.urls import path, include
+from rest_framework import routers
 
-from .views import UsersView, IdentificationView
+from .views import IdentificationView, RegistrationView
 
 app_name = "face_rec"
 
+router = routers.DefaultRouter()
+router.register('registration', RegistrationView)
+
 # app_name will help us do a reverse look-up latter.
 urlpatterns = [
-    url(r'^users/', UsersView.as_view()),
-    url(r'^identificate', IdentificationView.as_view()),
+    path('', include(router.urls)),
+    url(r'^identification', IdentificationView.as_view())
 ]
