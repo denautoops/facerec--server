@@ -30,12 +30,16 @@ class IdentificationView(APIView):
     def post(self, request):
 
         ident_photo = file_utils.create_jpeg_file_from_memory(request.data['photo'])
+        unknown_faces = face_identification.get_faces_from_image(ident_photo)
 
         users = User.objects.all()
+        identified_users = []
 
         for user in users.iterator():
             photo1 = user.photo
-            if face_identification.isIdent(settings.BASE_DIR + photo1.url, ident_photo):
-                fn = user.first_name
-                ln = user.last_name
-                return Response({'firstName': fn, 'lastName': ln})
+            for face in unknown_faces:
+                if face_identification.is_identified(settings.BASE_DIR + photo1.url, face):
+                    identified_users.append(user)
+
+        serializer = UserSerializer(identified_users, many=True)
+        return Response(serializer.data)
